@@ -20,14 +20,14 @@ public class DailyStoryDB {
     /**
      * private instance
      */
-    private DailyStoryDataDB dailyStoryDataDB;
+    private DailyStoryDB dailyStoryDataDB;
 
     private SQLiteDatabase db;
 
     /**
      * private constructor
      */
-    private DailyStoryDataDB(Context context) {
+    private DailyStoryDB(Context context) {
 
     }
 
