@@ -13,6 +13,7 @@ public class DailyStoryDBHelper extends SQLiteOpenHelper {
      */
     public static final String CREATE_STORY_INFO = "create table StoryInfo ("
             + "id integer primary key, "
+            + "date integer, "
             + "body text, "
             + "image_source text, "
             + "image text, "
