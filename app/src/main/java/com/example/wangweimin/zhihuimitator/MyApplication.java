@@ -18,14 +18,8 @@ public class MyApplication extends Application {
     /**
      * config
      */
-    public static final String SAVED_VERSION = "save_version";
-    public static final String USER = "user";
     public static final String EXTRA_GMID = "gmid";
-    public static final String TEST_CONFIG_HOST = "test_config_host";
     public static final String NEED_UPDATE = "need_update";
-    public static final String ACCOUNT = "new_account";
-    public static final String PASSWORD = "new_password";
-    public static final String PASSWORD_LENGTH = "password_length";
     public static final String LICENSE = "license";
 
 

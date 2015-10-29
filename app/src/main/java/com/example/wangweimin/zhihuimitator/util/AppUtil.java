@@ -563,22 +563,6 @@ public class AppUtil {
         return param;
     }
 
-    public static String getUniqueUuid(Context context) {
-        if (context == null)
-            return null;
-        Editor editor = MyApplication.config.edit();
-        String result = getImei(context);
-
-        if (result == null) {
-            result = new DeviceUUIDFactory(context).getDeviceUUID().toString();
-            result = result.replace("-", "");
-        }
-
-        editor.putString(MyApplication.EXTRA_GMID, result);
-        editor.commit();
-        return result;
-    }
-
     public static String getImei(Context context) {
         TelephonyManager TelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String imte = TelephonyMgr.getDeviceId();
