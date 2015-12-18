@@ -1,5 +1,7 @@
 package com.example.wangweimin.zhihuimitator.entity;
 
+import java.util.List;
+
 /**
  * Created by wangweimin on 15/10/28.
  */
@@ -8,6 +10,8 @@ public class StoryInfo extends BaseBean {
     public String image_source;
     public String image;
     public String share_url;
+    public List<String> js;
+    public List<String> css;
     public int date;
     public int id;
 

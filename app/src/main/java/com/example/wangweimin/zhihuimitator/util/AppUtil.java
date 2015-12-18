@@ -397,29 +397,6 @@ public class AppUtil {
         return activeNetInfo != null && activeNetInfo.isAvailable();
     }
 
-    public static void setupNotification(Context context, Bundle bundle, String contentText, Class<?> classes) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(context.getResources().getString(R.string.app_name)).setContentText(contentText);
-        Intent resultIntent = new Intent(context, classes);
-        int notificationId = (int) (Math.random() * 100);
-        bundle.putInt(Constants.NOTIFICATIONID, notificationId);
-        resultIntent.putExtras(bundle);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(resultPendingIntent);
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.notify(notificationId, mBuilder.build());
-    }
-
-    public static void cancelNotification(Activity activity) {
-        try {
-            NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotifyMgr.cancel(activity.getIntent().getIntExtra(Constants.NOTIFICATIONID, 0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void cancelTask(AsyncTask task) {
         if (task != null && !task.isCancelled()) {
@@ -739,10 +716,5 @@ public class AppUtil {
         //mi.availMem; 当前系统的可用内存
 
         return mi.availMem / 1024 / 1024;// 将获取的内存大小规格化
-    }
-
-    public static void checkTokenTimeout(int code) {
-        if (Constants.CODE_LOGIN_TIME_OUT == code) {
-        }
     }
 }

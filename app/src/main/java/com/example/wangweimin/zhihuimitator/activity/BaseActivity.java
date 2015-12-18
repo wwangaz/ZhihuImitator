@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by wangweimin on 15/10/29.
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends AppCompatActivity {
     protected MyApplication mApp;
     protected Context mContext;
     protected Intent mIntent;
@@ -47,6 +48,10 @@ public abstract class BaseActivity extends Activity {
     protected abstract int getLayoutId();
 
     protected abstract void afterViews(Bundle saveInstanceState);
+
+    public void pushView(Class<? extends Activity> activityClass, Bundle bundle){
+        pushView(activityClass, bundle, true);
+    }
 
     public void pushView(Class<? extends Activity> activityClass, Bundle bundle, boolean isAnimator) {
         Intent intent = new Intent(thisActivity, activityClass);

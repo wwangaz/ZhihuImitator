@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -15,13 +16,9 @@ public class MyApplication extends Application {
     public static SharedPreferences config;
     public static EventBus mEventBus;
 
-    /**
-     * config
-     */
-    public static final String EXTRA_GMID = "gmid";
-    public static final String NEED_UPDATE = "need_update";
-    public static final String LICENSE = "license";
-
+    public MyApplication(){
+        super();
+    }
 
     @Override
     public void onCreate() {
@@ -29,5 +26,6 @@ public class MyApplication extends Application {
         mContext = this.getApplicationContext();
         config = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mEventBus = EventBus.getDefault();
+        ButterKnife.setDebug(true);
     }
 }
