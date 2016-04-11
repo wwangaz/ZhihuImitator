@@ -3,10 +3,7 @@ package com.example.wangweimin.zhihuimitator.activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.wangweimin.zhihuimitator.Constants;
 import com.example.wangweimin.zhihuimitator.R;
