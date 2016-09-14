@@ -4,9 +4,14 @@ Based on the API of Zhihu link [ZhihuApi] (https://github.com/izzyleung/ZhihuDai
 And presents struct and techniques I use in daily work.
 
 首页列表 done
+
 首页SlideMenu done
+
 StoryDetail done
-收藏 to do
-收藏列表 to do
-夜间模式 to do
+
+收藏 
+
+收藏列表 
+
+夜间模式
 
