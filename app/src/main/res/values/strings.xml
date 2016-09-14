@@ -1,14 +1,16 @@
 <resources>
-    <string name="app_name">ZhihuImitator</string>
+    <string name="app_name">ZhiHuImitator</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="default_name">知乎用户</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="message">消息</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="setting">设置选项</string>
+    <string name="home">首页</string>
 
-    <string name="action_example">Example action</string>
-
-    <string name="action_settings">Settings</string>
+    <string name="share">分享</string>
+    <string name="collect">收藏</string>
+    <string name="back">返回</string>
+    <string name="comment">评论</string>
+    <string name="vote">点赞</string>
 </resources>

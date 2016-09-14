@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/detail_share"
+        android:icon="@drawable/ab_share"
+        android:title="@string/share"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/detail_collect"
+        android:icon="@drawable/collect"
+        android:title="@string/collect"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/detail_comment"
+        android:icon="@drawable/comment"
+        android:title="@string/comment"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/detail_vote"
+        android:icon="@drawable/comment_vote"
+        android:title="@string/vote"
+        app:showAsAction="always"/>
+
+
+</menu>

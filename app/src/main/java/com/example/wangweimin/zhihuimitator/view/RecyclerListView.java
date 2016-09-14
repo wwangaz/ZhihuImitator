@@ -10,14 +10,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.wangweimin.zhihuimitator.R;
-import com.example.wangweimin.zhihuimitator.adapter.BaseRecyclerListAdapter;
+import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
 
 /**
  * Created by wangweimin on 15/12/10.
  */
 public class RecyclerListView extends RecyclerView {
 
-    public static int PAGE_LIMIT_NONE = -1;
+    private static int PAGE_LIMIT_NONE = -1;
 
     private boolean loadBottomDataCompleted = true;
 
@@ -26,6 +26,8 @@ public class RecyclerListView extends RecyclerView {
     private OnRecyclerViewScrollBottomListener scrollBottomListener;
 
     private Drawable mDivider;
+
+    private boolean mDecorate;
 
     public interface OnRecyclerViewScrollBottomListener {
         void requestNextPage();
@@ -74,7 +76,7 @@ public class RecyclerListView extends RecyclerView {
         } else {
             dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST);
         }
-        addItemDecoration(dividerItemDecoration);
+        if (mDecorate) addItemDecoration(dividerItemDecoration);
         setOnScrollListener(onScrollListener);
     }
 
@@ -104,7 +106,7 @@ public class RecyclerListView extends RecyclerView {
             } else {
                 setVisibility(VISIBLE);
                 setEmptyViewVisibility(GONE);
-                adapter.setHasFooter(pageLimit != PAGE_LIMIT_NONE && size % pageLimit == 0 && !isCurrentListEmpty);
+                adapter.setHasFooter(pageLimit != PAGE_LIMIT_NONE && !isCurrentListEmpty);
             }
         }
     }
@@ -123,6 +125,10 @@ public class RecyclerListView extends RecyclerView {
 
     public void setLoadingView(View loadingView) {
         mLoadingView = loadingView;
+    }
+
+    public void setDecorate(boolean decorate) {
+        mDecorate = decorate;
     }
 
     private void setFailedViewVisibility(int visibility) {

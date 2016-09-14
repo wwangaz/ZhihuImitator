@@ -1,43 +1,47 @@
 package com.example.wangweimin.zhihuimitator.activity;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import com.example.wangweimin.zhihuimitator.Constants;
 import com.example.wangweimin.zhihuimitator.R;
-import com.example.wangweimin.zhihuimitator.adapter.BaseRecyclerListAdapter;
-import com.example.wangweimin.zhihuimitator.adapter.StoryAdapter;
-import com.example.wangweimin.zhihuimitator.api.StoryApi;
-import com.example.wangweimin.zhihuimitator.entity.Story;
-import com.example.wangweimin.zhihuimitator.retrofit.Net;
-import com.example.wangweimin.zhihuimitator.util.AppUtil;
-import com.example.wangweimin.zhihuimitator.view.RecyclerListView;
-
-import java.util.List;
+import com.example.wangweimin.zhihuimitator.base.BaseActivity;
+import com.example.wangweimin.zhihuimitator.fragment.CollectFragment;
+import com.example.wangweimin.zhihuimitator.fragment.StoryFragment;
 
 import butterknife.Bind;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 /**
  * Created by wangweimin on 15/10/29.
  */
 public class MainActivity extends BaseActivity {
-    @Bind(R.id.main_recycler_view)
-    RecyclerListView mListView;
-
-    @Bind(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefresh;
-
     @Bind(R.id.main_tool_bar)
     Toolbar mToolBar;
 
-    private StoryAdapter mAdapter;
-    private int date;
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
+
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.menu_collect_text)
+    TextView mCollectText;
+
+    @Bind(R.id.menu_download_text)
+    TextView mDownloadText;
+
+    private CollectFragment mCollectFragment;
+    private StoryFragment mStoryFragment;
+    private FragmentManager manager = getSupportFragmentManager();
 
     @Override
     protected int getLayoutId() {
@@ -47,91 +51,61 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void afterViews(Bundle saveInstanceState) {
         setSupportActionBar(mToolBar);
-        mAdapter = new StoryAdapter();
 
-        mAdapter.setActivity(thisActivity);
-        mListView.setAdapter(mAdapter);
-
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseRecyclerListAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClickListener(View view, int position) {
-                Story story = mAdapter.getData().get(position);
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.STORY_ID, story.id);
-                pushView(StoryInfoActivity.class, bundle);
-            }
-        });
-
-        mListView.setOnRecyclerViewScrollBottomListener(new RecyclerListView.OnRecyclerViewScrollBottomListener() {
-            @Override
-            public void requestNextPage() {
-                getNextData();
-            }
-        });
-
-        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-            }
-        });
-
-        getData();
-    }
-
-    public void getData() {
-        Call<Story.StoryResult> call = Net.getApi(StoryApi.class).latestStories();
-        call.enqueue(new Callback<Story.StoryResult>() {
-                         @Override
-                         public void onResponse(Response<Story.StoryResult> response, Retrofit retrofit) {
-                             if (response != null) {
-                                 List<Story> list = response.body().stories;
-                                 date = response.body().date;
-                                 if (list != null) {
-                                     mAdapter.refreshViewByReplaceData(list);
-                                     mListView.renderViewByResult(false, list.size(), list.isEmpty());
-                                 }
-                             }
-                             dismissProgress();
-                         }
-
-                         @Override
-                         public void onFailure(Throwable t) {
-                             AppUtil.showShortMessage(thisActivity, "首页数据获取失败" + t.getMessage());
-                             dismissProgress();
-                         }
-                     }
-        );
-    }
-
-    public void getNextData() {
-        if (date != 0) {
-            Call<Story.StoryResult> call = Net.getApi(StoryApi.class).beforeStories(date);
-            call.enqueue(new Callback<Story.StoryResult>() {
-                @Override
-                public void onResponse(Response<Story.StoryResult> response, Retrofit retrofit) {
-                    if(response.body() != null){
-                        List<Story> list = response.body().stories;
-                        mAdapter.refreshViewByAddData(list);
-                        mListView.renderViewByResult(false, Constants.PAGE_LIMIT, list.isEmpty());
-                        date--;
-                    }
-                    dismissProgress();
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    AppUtil.showShortMessage(thisActivity, "往期数据获取失败" + t.getMessage());
-                    dismissProgress();
-                }
-            });
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        setupDrawerContent(mNavigationView);
+
+        mCollectFragment = new CollectFragment();
+        mStoryFragment = new StoryFragment();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.content_frame, mCollectFragment, CollectFragment.TAG);
+        transaction.add(R.id.content_frame, mStoryFragment, StoryFragment.TAG);
+        transaction.commit();
+
+        mCollectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manager.beginTransaction().show(mCollectFragment).hide(mStoryFragment).commit();
+                mDrawerLayout.closeDrawers();
+            }
+        });
     }
 
-    public void dismissProgress() {
-        if (mSwipeRefresh.isRefreshing()) {
-            mSwipeRefresh.setRefreshing(false);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.main:
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.show(mStoryFragment).hide(mCollectFragment).commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 }
