@@ -1,8 +1,8 @@
 package com.example.wangweimin.zhihuimitator.dataSource.retrofit;
 
-import com.example.wangweimin.zhihuimitator.Model.Story;
 import com.example.wangweimin.zhihuimitator.dataSource.StoryDataSource;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
+import com.example.wangweimin.zhihuimitator.model.Story;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ import retrofit.Retrofit;
  */
 
 public class RemoteStoryData implements StoryDataSource {
+
+    private final static String SPLASH_URL = "http://news-at.zhihu.com/api/4/start-image/";
 
     private static RemoteStoryData Instance;
 
@@ -95,4 +97,5 @@ public class RemoteStoryData implements StoryDataSource {
     public void collectStory(String id) {
         // TODO: 16/8/24 need to login
     }
+
 }

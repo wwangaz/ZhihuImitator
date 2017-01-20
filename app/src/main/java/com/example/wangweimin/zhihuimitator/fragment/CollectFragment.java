@@ -2,7 +2,7 @@ package com.example.wangweimin.zhihuimitator.fragment;
 
 import android.os.Bundle;
 
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.adapter.StoryAdapter;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;
@@ -64,7 +64,7 @@ public class CollectFragment extends BaseFragment {
 
             @Override
             public void onDataNotAvailable() {
-                AppUtil.showShortMessage(getActivity(), "获取收藏列表失败");
+
             }
         }, page);
     }

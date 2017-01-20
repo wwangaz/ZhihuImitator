@@ -1,6 +1,9 @@
 package com.example.wangweimin.zhihuimitator.dataSource;
 
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.example.wangweimin.zhihuimitator.model.Story;
 
 import java.util.List;
 
@@ -30,5 +33,4 @@ public interface StoryDataSource {
     void deleteStories();
 
     void collectStory(String id);
-
 }

@@ -1,4 +1,4 @@
-package com.example.wangweimin.zhihuimitator.Model;
+package com.example.wangweimin.zhihuimitator.model;
 
 import com.example.wangweimin.zhihuimitator.base.BaseBean;
 

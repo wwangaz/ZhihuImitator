@@ -27,7 +27,6 @@ public class BaseBean implements Serializable {
                 return true;
             } else {
                 int code = AppUtil.getJsonIntegerValue(json, "code");
-//                AppUtil.checkTokenTimeout(code);
                 throw new MyException(code, AppUtil.getJsonStringValue(json, "errorMsg"));
             }
         } else {

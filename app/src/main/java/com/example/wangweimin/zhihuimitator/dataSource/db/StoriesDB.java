@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.example.wangweimin.zhihuimitator.Constants;
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.dataSource.StoryDataSource;
 
 import java.util.ArrayList;

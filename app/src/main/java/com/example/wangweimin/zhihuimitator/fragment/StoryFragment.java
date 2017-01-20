@@ -5,7 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.wangweimin.zhihuimitator.Constants;
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.activity.StoryDetailActivity;
 import com.example.wangweimin.zhihuimitator.adapter.StoryAdapter;

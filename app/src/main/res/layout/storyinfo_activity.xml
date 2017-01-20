@@ -10,8 +10,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:visibility="visible">
+        android:fitsSystemWindows="true">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -19,13 +18,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/blue"
             app:layout_behavior="com.example.wangweimin.zhihuimitator.view.FadeBehavior"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_scrollFlags="scroll" />
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             app:layout_scrollFlags="scroll"
+            android:fitsSystemWindows="true"
             app:titleEnabled="false">
 
             <include

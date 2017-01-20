@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangweimin.zhihuimitator.Constants;
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.activity.StoryDetailActivity;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;

@@ -1,6 +1,7 @@
 package com.example.wangweimin.zhihuimitator.dataSource.retrofit.api;
 
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Image;
+import com.example.wangweimin.zhihuimitator.model.Story;
 
 import retrofit.Call;
 import retrofit.http.GET;
@@ -10,12 +11,15 @@ import retrofit.http.Path;
  * Created by wangweimin on 15/9/16.
  */
 public interface StoryApi {
-    @GET("latest")
+    @GET("news/latest")
     Call<Story.StoryResult> latestStories();
 
-    @GET("before/{date}")
+    @GET("news/before/{date}")
     Call<Story.StoryResult> beforeStories(@Path("date") String date);
 
-    @GET("{id}")
+    @GET("news/{id}")
     Call<Story> getStoryInfo(@Path("id") String id);
+
+    @GET("start-image/{resolution}")
+    Call<Image> getStartImage(@Path("resolution") String resolution);
 }

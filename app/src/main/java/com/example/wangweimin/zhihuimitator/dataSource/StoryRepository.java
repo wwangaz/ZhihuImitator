@@ -3,7 +3,7 @@ package com.example.wangweimin.zhihuimitator.dataSource;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.example.wangweimin.zhihuimitator.Model.Story;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.dataSource.db.StoriesDB;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.RemoteStoryData;
 

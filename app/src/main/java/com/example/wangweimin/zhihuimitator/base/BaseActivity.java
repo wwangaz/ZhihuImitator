@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected MyApplication mApp;
     protected Context mContext;
     protected Intent mIntent;
-    protected LayoutInflater mLayoutInflater;
     protected BaseActivity thisActivity;
 
     private long exitTime;
@@ -35,7 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         thisActivity = this;
         mApp = (MyApplication) getApplication();
-        mLayoutInflater = LayoutInflater.from(mContext);
         mIntent = getIntent();
 
         int layoutId = getLayoutId();
@@ -97,20 +95,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         }else{
             popView();
         }
-    }
-
-    public void showBackDialog(){
-        new AlertDialog.Builder(this).setCancelable(false).setMessage("是否确认退出？")
-                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        popView();
-                    }
-                }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        }).show();
     }
 }
