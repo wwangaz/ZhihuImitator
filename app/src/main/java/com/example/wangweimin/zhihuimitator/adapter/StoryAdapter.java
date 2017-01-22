@@ -96,14 +96,14 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.story_image)
         ImageView storyImage;
 
         @Bind(R.id.story_title)
         TextView storyTitle;
 
-        private ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
