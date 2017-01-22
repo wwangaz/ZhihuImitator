@@ -37,9 +37,8 @@ public class CollectFragment extends BaseFragment {
 
     @Override
     protected void afterViews(Bundle savedInstanceState) {
-        mAdapter = new StoryAdapter();
-        mAdapter.setActivity((BaseActivity) getActivity());
-
+        mAdapter = new StoryAdapter((BaseActivity) getActivity());
+        mAdapter.setHasHeader(true);
         mRecyclerView.setDecorate(false);
         mRecyclerView.setAdapter(mAdapter);
 

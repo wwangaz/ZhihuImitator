@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
     android:paddingTop="@dimen/activity_padding">
 
@@ -26,6 +26,7 @@
         android:textSize="20sp" />
 
     <LinearLayout
+        android:id="@+id/header_action_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/nav_head"
@@ -35,8 +36,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/menu_collect"
@@ -81,6 +82,31 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/home_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_action_layout"
+        android:background="@color/cardview_light_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/home" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="首页"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

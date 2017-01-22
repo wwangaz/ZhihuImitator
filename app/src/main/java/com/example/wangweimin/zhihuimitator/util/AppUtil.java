@@ -2,14 +2,11 @@ package com.example.wangweimin.zhihuimitator.util;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,9 +17,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -33,9 +28,7 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.wangweimin.zhihuimitator.Constants;
 import com.example.wangweimin.zhihuimitator.MyApplication;
-import com.example.wangweimin.zhihuimitator.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,59 +60,6 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class AppUtil {
-
-    public static String[] getJsonObjectStringArray(JSONArray jsonArray, String key) {
-        String res[];
-        try {
-            res = new String[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject2 = new JSONObject(jsonArray.getString(i));
-                res[i] = getJsonStringValue(jsonObject2, key);
-            }
-        } catch (Exception e) {
-            return new String[]{};
-        }
-        return res;
-    }
-
-    public static int[] getJsonObjectIntegerArray(JSONArray jsonArray, String key) {
-        int res[];
-        try {
-            res = new int[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject2 = new JSONObject(jsonArray.getString(i));
-                res[i] = getJsonIntegerValue(jsonObject2, key);
-            }
-        } catch (Exception e) {
-            return new int[]{};
-        }
-        return res;
-    }
-
-    public static JSONObject getJsonObject(JSONArray jsonArray, int index) {
-        try {
-            if (jsonArray != null && index >= 0 && index < jsonArray.length()) {
-                return jsonArray.getJSONObject(index);
-            }
-        } catch (JSONException e) {
-            return null;
-        }
-        return null;
-    }
-
-    public static String getArrayValue(String[] array, int index) {
-        if (array != null && index >= 0 && index < array.length) {
-            return array[index];
-        }
-        return "";
-    }
-
-    public static int getArrayValue(int[] array, int index) {
-        if (array != null && index >= 0 && index < array.length) {
-            return array[index];
-        }
-        return 0;
-    }
 
     public static String getJsonStringValue(JSONObject jsonObject, String key) {
         return getJsonStringValue(jsonObject, key, "");
@@ -155,9 +95,6 @@ public class AppUtil {
         return defaultValue;
     }
 
-    public static Long getJsonLongValue(JSONObject json, String key) {
-        return getJsonLongValue(json, key, 0L);
-    }
 
     public static Long getJsonLongValue(JSONObject jsonObject, String key, Long defaultValue) {
         try {
@@ -170,16 +107,6 @@ public class AppUtil {
         return defaultValue;
     }
 
-    public static float getJsonFloatValue(JSONObject jsonObject, String key, float defaultValue) {
-        try {
-            if (jsonObject != null && jsonObject.has(key)) {
-                return Float.valueOf(jsonObject.getString(key));
-            }
-        } catch (Exception e) {
-            return defaultValue;
-        }
-        return defaultValue;
-    }
 
     public static boolean getJsonBooleanValue(JSONObject jsonObject, String key, boolean defaultValue) {
         try {

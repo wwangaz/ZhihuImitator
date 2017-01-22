@@ -54,10 +54,9 @@ public class StoryFragment extends BaseFragment {
         mActivity = (BaseActivity) getActivity();
         repository = StoryRepository.getInstance(getContext());
 
-        mAdapter = new StoryAdapter();
+        mAdapter = new StoryAdapter(mActivity);
         mAdapter.setHasHeader(true);
 
-        mAdapter.setActivity(mActivity);
         mListView.setAdapter(mAdapter);
         mListView.setDecorate(false);
 

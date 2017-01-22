@@ -8,13 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;
 import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.view.BannerViewPager;
 import com.example.wangweimin.zhihuimitator.view.IndicatorView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,12 +30,17 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
 
     private HeadViewHolder mHeadViewHolder;
 
-    public void setActivity(BaseActivity activity) {
+    private List<Story> mBannerList;
+
+    public StoryAdapter(BaseActivity activity) {
         mActivity = activity;
+        mBannerList = new ArrayList<>();
     }
 
     public void setBannerList(List<Story> bannerList) {
-        mHeadViewHolder.mCircularAdapter.setBannerList(bannerList);
+        if (mHeadViewHolder != null && mHeadViewHolder.mCircularAdapter != null)
+            mHeadViewHolder.mCircularAdapter.setBannerList(bannerList);
+        else mBannerList = bannerList;
     }
 
     @Override
@@ -54,7 +60,7 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
     protected void onBindItemViewHolder(ViewHolder viewHolder, int position) {
         Story story = getData().get(position);
         if (story != null) {
-            if(story.images != null && story.images.size() > 0)
+            if (story.images != null && story.images.size() > 0)
                 Glide.with(mActivity).load(story.images.get(0)).into(viewHolder.storyImage);
             viewHolder.storyTitle.setText(story.title);
         }
@@ -70,12 +76,14 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
 
         private CircularPageAdapter mCircularAdapter;
 
-        public HeadViewHolder(View view) {
+        private HeadViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
 
             mCircularAdapter = new CircularPageAdapter(mBannerViewPager, mActivity, mIndicatorView);
             mBannerViewPager.setAdapter(mCircularAdapter);
+            if (mBannerList != null && mBannerList.size() > 0)
+                mCircularAdapter.setBannerList(mBannerList);
 
             try {
                 mBannerViewPager.stopLoopingBanner();
@@ -95,7 +103,7 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
         @Bind(R.id.story_title)
         TextView storyTitle;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

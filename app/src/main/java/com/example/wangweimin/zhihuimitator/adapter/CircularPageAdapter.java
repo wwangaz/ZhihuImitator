@@ -47,10 +47,6 @@ public class CircularPageAdapter extends PagerAdapter implements ViewPager.OnPag
         this.notifyDataSetChanged();
     }
 
-    public List<Story> getData() {
-        return mBannerList;
-    }
-
     public CircularPageAdapter(final ViewPager pager, BaseActivity activity, final IndicatorView indicatorView) {
         mActivity = activity;
         mLayoutInflater = LayoutInflater.from(activity);

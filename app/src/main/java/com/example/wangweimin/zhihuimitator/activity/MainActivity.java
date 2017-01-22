@@ -2,8 +2,8 @@ package com.example.wangweimin.zhihuimitator.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,14 +11,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.wangweimin.zhihuimitator.R;
+import com.example.wangweimin.zhihuimitator.adapter.DrawerMenuAdapter;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;
+import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
+import com.example.wangweimin.zhihuimitator.dataSource.retrofit.Net;
+import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
 import com.example.wangweimin.zhihuimitator.fragment.CollectFragment;
 import com.example.wangweimin.zhihuimitator.fragment.StoryFragment;
+import com.example.wangweimin.zhihuimitator.fragment.ThemeStoryFragment;
+import com.example.wangweimin.zhihuimitator.model.Themes;
+import com.example.wangweimin.zhihuimitator.view.RecyclerListView;
 
 import butterknife.Bind;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by wangweimin on 15/10/29.
@@ -33,15 +42,12 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.menu_collect_text)
-    TextView mCollectText;
+    @Bind(R.id.drawer_menu_list)
+    RecyclerListView mDrawerMenuList;
 
-    @Bind(R.id.menu_download_text)
-    TextView mDownloadText;
+    private DrawerMenuAdapter mAdapter;
 
-    private CollectFragment mCollectFragment;
-    private StoryFragment mStoryFragment;
-    private FragmentManager manager = getSupportFragmentManager();
+    private Fragment mCurrentFragment;
 
     @Override
     protected int getLayoutId() {
@@ -58,22 +64,36 @@ public class MainActivity extends BaseActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
-        setupDrawerContent(mNavigationView);
+        setupDrawerContent();
 
-        mCollectFragment = new CollectFragment();
-        mStoryFragment = new StoryFragment();
-        final FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.content_frame, mCollectFragment, CollectFragment.TAG);
-        transaction.add(R.id.content_frame, mStoryFragment, StoryFragment.TAG);
-        transaction.commit();
+        showFragmentByTag(StoryFragment.TAG, new StoryFragment());
 
-        mCollectText.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener collectListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                manager.beginTransaction().show(mCollectFragment).hide(mStoryFragment).commit();
+                showFragmentByTag(CollectFragment.TAG, new CollectFragment());
                 mDrawerLayout.closeDrawers();
             }
+        };
+
+        View.OnClickListener homeListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            }
+        };
+
+        mAdapter = new DrawerMenuAdapter(collectListener, homeListener);
+        mAdapter.setHasHeader(true);
+        mAdapter.setOnRecyclerViewItemClickListener(new BaseRecyclerListAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                // 17/1/22 切换到theme story fragment
+                String themeId = mAdapter.getData().get(position).id;
+                showFragmentByTag(ThemeStoryFragment.TAG, ThemeStoryFragment.newInstance(themeId));
+            }
         });
+        mDrawerMenuList.setAdapter(mAdapter);
     }
 
     @Override
@@ -92,20 +112,32 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupDrawerContent() {
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        Net.getApi(StoryApi.class).getThemes().enqueue(new Callback<Themes.ThemesResult>() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.main:
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        transaction.show(mStoryFragment).hide(mCollectFragment).commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                }
-                return true;
+            public void onResponse(Response<Themes.ThemesResult> response, Retrofit retrofit) {
+                if (response.body() != null)
+                    mAdapter.refreshViewByReplaceData(response.body().others);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
+    }
+
+    private void showFragmentByTag(String tag, Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment addedFragment = manager.findFragmentByTag(tag);
+        if (addedFragment != null){
+            manager.beginTransaction().show(addedFragment).commit();
+            mCurrentFragment = addedFragment;
+        }
+        else{
+            manager.beginTransaction().add(R.id.content_frame, fragment, tag).hide(mCurrentFragment).commit();
+            mCurrentFragment = fragment;
+        }
     }
 }

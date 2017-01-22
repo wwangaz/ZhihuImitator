@@ -2,6 +2,8 @@ package com.example.wangweimin.zhihuimitator.dataSource.retrofit.api;
 
 import com.example.wangweimin.zhihuimitator.model.Image;
 import com.example.wangweimin.zhihuimitator.model.Story;
+import com.example.wangweimin.zhihuimitator.model.Themes;
+import com.example.wangweimin.zhihuimitator.model.ThemesDetail;
 
 import retrofit.Call;
 import retrofit.http.GET;
@@ -22,4 +24,10 @@ public interface StoryApi {
 
     @GET("start-image/{resolution}")
     Call<Image> getStartImage(@Path("resolution") String resolution);
+
+    @GET("themes")
+    Call<Themes.ThemesResult> getThemes();
+
+    @GET("theme/{id}")
+    Call<ThemesDetail> getThemesDetail(@Path("id") String id);
 }

@@ -8,12 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawableResource;
 import com.example.wangweimin.zhihuimitator.Constants;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.Net;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
 import com.example.wangweimin.zhihuimitator.model.Image;
+import com.example.wangweimin.zhihuimitator.util.AppUtil;
 import com.nineoldandroids.view.ViewHelper;
 
 import butterknife.Bind;
@@ -43,11 +45,12 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void afterViews(Bundle saveInstanceState) {
 
+        // TODO: 17/1/22 加载对应尺寸的首页图
         Net.getApi(StoryApi.class).getStartImage(Constants.SCREEN_RESOLUTION).enqueue(new Callback<Image>() {
             @Override
             public void onResponse(Response<Image> response, Retrofit retrofit) {
                 if (response.body() != null && !TextUtils.isEmpty(response.body().img))
-                    Glide.with(mContext).load(response.body().img).into(imageView);
+                    Glide.with(mContext).load(response.body().img).override(AppUtil.getScreenWidth(), AppUtil.getScreenHeight()).centerCrop().into(imageView);
             }
 
             @Override
@@ -56,16 +59,16 @@ public class SplashActivity extends BaseActivity {
             }
         });
 
-        // TODO: 17/1/20 图片的缓存
+        // TODO: 17/1/20 图片的缓存，交给Glide处理
 
         ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 1.3f);
         animator.setTarget(imageView);
-//        animator.setDuration(DURATION).start();
+        animator.setDuration(DURATION).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                ViewHelper.setScaleX(imageView, animation.getAnimatedFraction());
-                ViewHelper.setScaleY(imageView, animation.getAnimatedFraction());
+                ViewHelper.setScaleX(imageView, (Float) animation.getAnimatedValue());
+                ViewHelper.setScaleY(imageView, (Float) animation.getAnimatedValue());
 
             }
         });
