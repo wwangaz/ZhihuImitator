@@ -95,6 +95,7 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
                 });
                 headerViewHolder.editorLayout.addView(imageView, params);
             }
+            headerViewHolder.animator.start();
         }
     }
 
@@ -108,22 +109,25 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
         @Bind(R.id.editor_layout)
         LinearLayout editorLayout;
 
+        private ValueAnimator animator;
+
         public ThemeHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             // TODO: 17/1/22 随机漂移动画
             final float imageWidth = headerImage.getWidth();
-            ValueAnimator animator = new ValueAnimator().ofFloat(1f, 1.5f);
+            animator = ValueAnimator.ofFloat(1.0f, 1.5f);
             animator.setTarget(headerImage);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    ViewHelper.setTranslationX(headerImage, ((float) animation.getAnimatedValue() - 1) * imageWidth);
-                    ViewHelper.setScaleX(headerImage, (float) animation.getAnimatedValue());
+                    ViewHelper.setTranslationX(headerImage, ((Float) animation.getAnimatedValue() - 1) * imageWidth);
+                    ViewHelper.setScaleX(headerImage, (Float) animation.getAnimatedValue());
+                    ViewHelper.setScaleY(headerImage, (Float) animation.getAnimatedValue());
                 }
             });
             animator.setRepeatMode(ValueAnimator.INFINITE);
-            animator.setDuration(1000).start();
+            animator.setDuration(1000);
         }
     }
 }

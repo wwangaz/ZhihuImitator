@@ -23,5 +23,4 @@
         android:title="@string/vote"
         app:showAsAction="always"/>
 
-
 </menu>

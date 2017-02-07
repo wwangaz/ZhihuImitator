@@ -1,22 +1,21 @@
 package com.example.wangweimin.zhihuimitator.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wangweimin.zhihuimitator.Constants;
-import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.base.BaseActivity;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.Net;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.util.AppUtil;
 
 import butterknife.Bind;
@@ -55,7 +54,8 @@ public class StoryDetailActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
         getData();
     }
@@ -64,6 +64,16 @@ public class StoryDetailActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_actions, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                popView();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getData() {

@@ -1,10 +1,15 @@
 package com.example.wangweimin.zhihuimitator.fragment;
 
 import android.os.Bundle;
+import android.view.View;
 
+import com.example.wangweimin.zhihuimitator.Constants;
 import com.example.wangweimin.zhihuimitator.R;
+import com.example.wangweimin.zhihuimitator.activity.StoryDetailActivity;
 import com.example.wangweimin.zhihuimitator.adapter.ThemeStoryAdapter;
+import com.example.wangweimin.zhihuimitator.base.BaseActivity;
 import com.example.wangweimin.zhihuimitator.base.BaseFragment;
+import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.Net;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
 import com.example.wangweimin.zhihuimitator.model.Story;
@@ -66,6 +71,16 @@ public class ThemeStoryFragment extends BaseFragment {
             @Override
             public void requestNextPage() {
                 getNextPage();
+            }
+        });
+
+        mAdapter.setOnRecyclerViewItemClickListener(new BaseRecyclerListAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Story story = mAdapter.getData().get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.STORY_ID, story.id);
+                ((BaseActivity)getActivity()).pushView(StoryDetailActivity.class, bundle);
             }
         });
 
