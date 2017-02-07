@@ -30,4 +30,7 @@ public interface StoryApi {
 
     @GET("theme/{id}")
     Call<ThemesDetail> getThemesDetail(@Path("id") String id);
+
+    @GET("theme/{id}/before/{storyId}")
+    Call<Story.StoryResult> getBeforeTheme(@Path("id") String id, @Path("storyId") String storyId);
 }

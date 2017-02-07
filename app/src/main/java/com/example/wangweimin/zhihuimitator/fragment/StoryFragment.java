@@ -5,7 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.wangweimin.zhihuimitator.Constants;
-import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.activity.StoryDetailActivity;
 import com.example.wangweimin.zhihuimitator.adapter.StoryAdapter;
@@ -14,6 +13,7 @@ import com.example.wangweimin.zhihuimitator.base.BaseFragment;
 import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
 import com.example.wangweimin.zhihuimitator.dataSource.StoryDataSource;
 import com.example.wangweimin.zhihuimitator.dataSource.StoryRepository;
+import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.util.AppUtil;
 import com.example.wangweimin.zhihuimitator.view.RecyclerListView;
 

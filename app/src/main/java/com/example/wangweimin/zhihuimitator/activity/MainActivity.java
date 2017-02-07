@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -33,6 +34,8 @@ import retrofit.Retrofit;
  * Created by wangweimin on 15/10/29.
  */
 public class MainActivity extends BaseActivity {
+    private final static String TAG = "MainActivity";
+
     @Bind(R.id.main_tool_bar)
     Toolbar mToolBar;
 
@@ -48,6 +51,8 @@ public class MainActivity extends BaseActivity {
     private DrawerMenuAdapter mAdapter;
 
     private Fragment mCurrentFragment;
+
+    private String currentThemeId;
 
     @Override
     protected int getLayoutId() {
@@ -79,7 +84,8 @@ public class MainActivity extends BaseActivity {
         View.OnClickListener homeListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                mDrawerLayout.closeDrawers();
+                showFragmentByTag(StoryFragment.TAG, new StoryFragment());
             }
         };
 
@@ -89,8 +95,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClickListener(View view, int position) {
                 // 17/1/22 切换到theme story fragment
+                // TODO: 17/2/7 切换actionbar
                 String themeId = mAdapter.getData().get(position).id;
                 showFragmentByTag(ThemeStoryFragment.TAG, ThemeStoryFragment.newInstance(themeId));
+                if (!themeId.equals(currentThemeId) && mCurrentFragment instanceof ThemeStoryFragment) {
+                    ((ThemeStoryFragment) mCurrentFragment).refreshDataById(themeId);
+                }
+                mDrawerLayout.closeDrawers();
             }
         });
         mDrawerMenuList.setAdapter(mAdapter);
@@ -131,12 +142,16 @@ public class MainActivity extends BaseActivity {
     private void showFragmentByTag(String tag, Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         Fragment addedFragment = manager.findFragmentByTag(tag);
-        if (addedFragment != null){
-            manager.beginTransaction().show(addedFragment).commit();
+        if (addedFragment != null) {
+            FragmentTransaction transaction = manager.beginTransaction();
+            if (mCurrentFragment != null) transaction.hide(mCurrentFragment);
+            transaction.show(addedFragment).commit();
             mCurrentFragment = addedFragment;
-        }
-        else{
-            manager.beginTransaction().add(R.id.content_frame, fragment, tag).hide(mCurrentFragment).commit();
+        } else {
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.content_frame, fragment, tag);
+            if (mCurrentFragment != null) transaction.hide(mCurrentFragment);
+            transaction.commit();
             mCurrentFragment = fragment;
         }
     }

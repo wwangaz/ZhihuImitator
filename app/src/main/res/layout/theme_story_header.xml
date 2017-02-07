@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="280dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="match_parent"
-        android:layout_height="280dp" />
+        android:layout_height="300dp" />
 
     <TextView
         android:id="@+id/header_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal|top"
-        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="#00000000"
+        android:gravity="bottom|left"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/editor_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_below="@id/header_title"
+        android:background="@color/fragment.background"
+        android:text="主编"
+        android:textColor="@color/text.grey"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/editor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/editor_hint"
+        android:layout_alignBottom="@id/editor_hint"
+        android:layout_toRightOf="@id/editor_hint"
+        android:gravity="center_vertical"
+        android:background="@color/fragment.background"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+    </LinearLayout>
 
 </RelativeLayout>

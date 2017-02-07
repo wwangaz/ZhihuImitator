@@ -23,8 +23,6 @@
         <activity android:name=".activity.StoryDetailActivity" />
 
         <activity android:name=".activity.MainActivity" />
-
-        <activity android:name=".activity.ThemeStoryActivity"/>
     </application>
 
 </manifest>

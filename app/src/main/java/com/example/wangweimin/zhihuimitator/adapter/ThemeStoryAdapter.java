@@ -1,21 +1,30 @@
 package com.example.wangweimin.zhihuimitator.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.wangweimin.zhihuimitator.R;
 import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
-import com.example.wangweimin.zhihuimitator.fragment.ThemeStoryFragment;
+import com.example.wangweimin.zhihuimitator.model.Editor;
 import com.example.wangweimin.zhihuimitator.model.Story;
+import com.example.wangweimin.zhihuimitator.util.AppUtil;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,8 +38,9 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
     private ThemeHeaderViewHolder headerViewHolder;
     private String mHeadUrl;
     private String mTitle;
+    private List<Editor> mEditors;
 
-    public ThemeStoryAdapter(Activity activity){
+    public ThemeStoryAdapter(Activity activity) {
         mActivity = activity;
     }
 
@@ -57,31 +67,63 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
         }
     }
 
-    public void setHeadData(String imgUrl, String title){
+    public void setHeadData(String imgUrl, String title, List<Editor> editors) {
         mHeadUrl = imgUrl;
         mTitle = title;
+        mEditors = editors;
 
-        if(headerViewHolder != null){
-            if(!TextUtils.isEmpty(imgUrl) && headerViewHolder.headerImage != null)
-                Glide.with(mActivity).load(imgUrl).into(headerViewHolder.headerImage);
-            if(!TextUtils.isEmpty(title) && headerViewHolder.headerTitle != null)
+        if (headerViewHolder != null) {
+            if (!TextUtils.isEmpty(imgUrl) && headerViewHolder.headerImage != null)
+                Glide.with(mActivity).load(imgUrl).centerCrop().override(headerViewHolder.headerImage.getWidth(), headerViewHolder.headerImage.getHeight()).into(headerViewHolder.headerImage);
+            if (!TextUtils.isEmpty(title) && headerViewHolder.headerTitle != null)
                 headerViewHolder.headerTitle.setText(title);
+            // TODO: 17/2/7 设置编辑列表
+            headerViewHolder.editorLayout.removeAllViews();
+            for (Editor editor : mEditors) {
+                final ImageView imageView = new ImageView(mActivity);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AppUtil.convertDpToPx(20), AppUtil.convertDpToPx(20));
+                params.gravity = Gravity.CENTER;
+                params.leftMargin = AppUtil.convertDpToPx(5);
+
+                Glide.with(mActivity).load(editor.avatar).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
+                        roundedBitmapDrawable.setCircular(true);
+                        imageView.setImageDrawable(roundedBitmapDrawable);
+                    }
+                });
+                headerViewHolder.editorLayout.addView(imageView, params);
+            }
         }
     }
 
-    public class ThemeHeaderViewHolder extends RecyclerView.ViewHolder{
+    public class ThemeHeaderViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.header_image)
         ImageView headerImage;
 
         @Bind(R.id.header_title)
         TextView headerTitle;
 
-        private Animation animation;
+        @Bind(R.id.editor_layout)
+        LinearLayout editorLayout;
 
         public ThemeHeaderViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             // TODO: 17/1/22 随机漂移动画
+            final float imageWidth = headerImage.getWidth();
+            ValueAnimator animator = new ValueAnimator().ofFloat(1f, 1.5f);
+            animator.setTarget(headerImage);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    ViewHelper.setTranslationX(headerImage, ((float) animation.getAnimatedValue() - 1) * imageWidth);
+                    ViewHelper.setScaleX(headerImage, (float) animation.getAnimatedValue());
+                }
+            });
+            animator.setRepeatMode(ValueAnimator.INFINITE);
+            animator.setDuration(1000).start();
         }
     }
 }
