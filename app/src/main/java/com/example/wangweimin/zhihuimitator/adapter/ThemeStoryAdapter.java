@@ -1,6 +1,7 @@
 package com.example.wangweimin.zhihuimitator.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,14 +19,18 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.wangweimin.zhihuimitator.R;
+import com.example.wangweimin.zhihuimitator.activity.EditorListActivity;
 import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
 import com.example.wangweimin.zhihuimitator.model.Editor;
 import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.util.AppUtil;
+import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,9 +42,6 @@ import butterknife.ButterKnife;
 public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.ViewHolder> {
     private Activity mActivity;
     private ThemeHeaderViewHolder headerViewHolder;
-    private String mHeadUrl;
-    private String mTitle;
-    private List<Editor> mEditors;
 
     public ThemeStoryAdapter(Activity activity) {
         mActivity = activity;
@@ -67,11 +70,7 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
         }
     }
 
-    public void setHeadData(String imgUrl, String title, List<Editor> editors) {
-        mHeadUrl = imgUrl;
-        mTitle = title;
-        mEditors = editors;
-
+    public void setHeadData(String imgUrl, String title, final ArrayList<Editor> editors) {
         if (headerViewHolder != null) {
             if (!TextUtils.isEmpty(imgUrl) && headerViewHolder.headerImage != null)
                 Glide.with(mActivity).load(imgUrl).centerCrop().override(headerViewHolder.headerImage.getWidth(), headerViewHolder.headerImage.getHeight()).into(headerViewHolder.headerImage);
@@ -79,7 +78,7 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
                 headerViewHolder.headerTitle.setText(title);
             // TODO: 17/2/7 设置编辑列表
             headerViewHolder.editorLayout.removeAllViews();
-            for (Editor editor : mEditors) {
+            for (Editor editor : editors) {
                 final ImageView imageView = new ImageView(mActivity);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AppUtil.convertDpToPx(20), AppUtil.convertDpToPx(20));
                 params.gravity = Gravity.CENTER;
@@ -95,6 +94,15 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
                 });
                 headerViewHolder.editorLayout.addView(imageView, params);
             }
+            headerViewHolder.editorLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity, EditorListActivity.class);
+                    intent.putExtra(EditorListActivity.EDITORS, editors);
+                    intent.putExtra(EditorListActivity.TITLE, "主编");
+                    mActivity.startActivity(intent);
+                }
+            });
             headerViewHolder.animator.start();
         }
     }
@@ -110,24 +118,50 @@ public class ThemeStoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapt
         LinearLayout editorLayout;
 
         private ValueAnimator animator;
+        private float animationFraction;
 
         public ThemeHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             // TODO: 17/1/22 随机漂移动画
-            final float imageWidth = headerImage.getWidth();
-            animator = ValueAnimator.ofFloat(1.0f, 1.5f);
+            animator = ValueAnimator.ofFloat(1.0f, 1.1f);
             animator.setTarget(headerImage);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    ViewHelper.setTranslationX(headerImage, ((Float) animation.getAnimatedValue() - 1) * imageWidth);
+                    float imageWidth = headerImage.getWidth();
+                    float imageHeight = headerImage.getHeight();
                     ViewHelper.setScaleX(headerImage, (Float) animation.getAnimatedValue());
                     ViewHelper.setScaleY(headerImage, (Float) animation.getAnimatedValue());
+                    ViewHelper.setPivotX(headerImage, imageWidth * animationFraction);
+                    ViewHelper.setPivotX(headerImage, imageHeight * animationFraction);
                 }
             });
-            animator.setRepeatMode(ValueAnimator.INFINITE);
-            animator.setDuration(1000);
+            animator.setRepeatMode(ValueAnimator.REVERSE);
+            animator.setRepeatCount(ValueAnimator.INFINITE);
+            animator.setDuration(5000);
+
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                    animationFraction = new Random().nextFloat();
+                }
+            });
         }
     }
 }

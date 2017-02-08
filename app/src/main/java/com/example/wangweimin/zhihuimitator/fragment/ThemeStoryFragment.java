@@ -12,10 +12,12 @@ import com.example.wangweimin.zhihuimitator.base.BaseFragment;
 import com.example.wangweimin.zhihuimitator.base.BaseRecyclerListAdapter;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.Net;
 import com.example.wangweimin.zhihuimitator.dataSource.retrofit.api.StoryApi;
+import com.example.wangweimin.zhihuimitator.model.Editor;
 import com.example.wangweimin.zhihuimitator.model.Story;
 import com.example.wangweimin.zhihuimitator.model.ThemesDetail;
 import com.example.wangweimin.zhihuimitator.view.RecyclerListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -80,6 +82,7 @@ public class ThemeStoryFragment extends BaseFragment {
                 Story story = mAdapter.getData().get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.STORY_ID, story.id);
+                bundle.putBoolean(StoryDetailActivity.SHOW_HEAD, false);
                 ((BaseActivity)getActivity()).pushView(StoryDetailActivity.class, bundle);
             }
         });
@@ -95,7 +98,7 @@ public class ThemeStoryFragment extends BaseFragment {
                 if (detail.stories != null) {
                     lastStoryId = detail.stories.get(detail.stories.size() - 1).id;
                     mAdapter.refreshViewByReplaceData(detail.stories);
-                    mAdapter.setHeadData(detail.image, detail.description, detail.editors);
+                    mAdapter.setHeadData(detail.image, detail.description, new ArrayList<>(detail.editors));
                     mRecyclerView.renderViewByResult(false, detail.stories.size(), detail.stories.isEmpty());
                 }
             }

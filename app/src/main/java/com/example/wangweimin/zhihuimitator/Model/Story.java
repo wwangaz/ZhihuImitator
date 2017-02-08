@@ -18,8 +18,10 @@ public class Story extends BaseBean {
     public String share_url;
     public List<String> js;
     public List<String> css;
+    public List<Editor> recommenders;
     public boolean favorite;
     public boolean top;
+    public int type;
 
     public class StoryResult {
         public String date;

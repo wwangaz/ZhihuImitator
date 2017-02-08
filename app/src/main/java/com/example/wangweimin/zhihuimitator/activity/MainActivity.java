@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity {
     protected void afterViews(Bundle saveInstanceState) {
         setSupportActionBar(mToolBar);
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -96,11 +96,13 @@ public class MainActivity extends BaseActivity {
             public void onItemClickListener(View view, int position) {
                 // 17/1/22 切换到theme story fragment
                 // TODO: 17/2/7 切换actionbar
-                String themeId = mAdapter.getData().get(position).id;
+                Themes themes = mAdapter.getData().get(position);
+                String themeId = themes.id;
                 showFragmentByTag(ThemeStoryFragment.TAG, ThemeStoryFragment.newInstance(themeId));
                 if (!themeId.equals(currentThemeId) && mCurrentFragment instanceof ThemeStoryFragment) {
                     ((ThemeStoryFragment) mCurrentFragment).refreshDataById(themeId);
                 }
+                if (actionBar != null) actionBar.setTitle(themes.name);
                 mDrawerLayout.closeDrawers();
             }
         });
