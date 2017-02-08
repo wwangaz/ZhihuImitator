@@ -57,6 +57,7 @@ public class EditorListActivity extends BaseActivity {
         if (editors != null) {
             mAdapter.refreshViewByReplaceData(editors);
         }
+        // TODO: 17/2/8 增加推荐者详情
     }
 
     @Override

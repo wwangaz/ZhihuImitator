@@ -59,6 +59,7 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
     @Override
     protected void onBindItemViewHolder(ViewHolder viewHolder, int position) {
         Story story = getData().get(position);
+        // TODO: 17/2/8 日期分割
         if (story != null) {
             if (story.images != null && story.images.size() > 0)
                 Glide.with(mActivity).load(story.images.get(0)).into(viewHolder.storyImage);
