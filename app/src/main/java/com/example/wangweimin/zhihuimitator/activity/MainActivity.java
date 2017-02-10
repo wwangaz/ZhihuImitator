@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.closeDrawers();
+                if (actionBar != null) actionBar.setTitle("今日日报");
                 showFragmentByTag(StoryFragment.TAG, new StoryFragment());
             }
         };
@@ -99,9 +100,10 @@ public class MainActivity extends BaseActivity {
                 Themes themes = mAdapter.getData().get(position);
                 String themeId = themes.id;
                 showFragmentByTag(ThemeStoryFragment.TAG, ThemeStoryFragment.newInstance(themeId));
-                if (!themeId.equals(currentThemeId) && mCurrentFragment instanceof ThemeStoryFragment) {
+                if (!themeId.equals(currentThemeId) && currentThemeId != null && mCurrentFragment instanceof ThemeStoryFragment) {
                     ((ThemeStoryFragment) mCurrentFragment).refreshDataById(themeId);
                 }
+                currentThemeId = themeId;
                 if (actionBar != null) actionBar.setTitle(themes.name);
                 mDrawerLayout.closeDrawers();
             }
