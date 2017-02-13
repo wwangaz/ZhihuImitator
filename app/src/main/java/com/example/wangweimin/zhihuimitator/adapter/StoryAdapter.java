@@ -1,6 +1,7 @@
 package com.example.wangweimin.zhihuimitator.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,10 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
 
     private List<Story> mBannerList;
 
+    private String dateStr;
+
+    private int firstSize;
+
     public StoryAdapter(BaseActivity activity) {
         mActivity = activity;
         mBannerList = new ArrayList<>();
@@ -41,6 +46,14 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
         if (mHeadViewHolder != null && mHeadViewHolder.mCircularAdapter != null)
             mHeadViewHolder.mCircularAdapter.setBannerList(bannerList);
         else mBannerList = bannerList;
+    }
+
+    public void setDateStr(String dateStr){
+        this.dateStr = dateStr;
+    }
+
+    public void setFirstSize(int size){
+        firstSize = size;
     }
 
     @Override
@@ -59,8 +72,18 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
     @Override
     protected void onBindItemViewHolder(ViewHolder viewHolder, int position) {
         Story story = getData().get(position);
-        // TODO: 17/2/8 日期分割
+        // 17/2/8 日期分割
+        // TODO: 17/2/13 图片会出现重复的情况
         if (story != null) {
+
+            if (position == 0 || (position - firstSize) % 19 == 0) {
+                if(TextUtils.isEmpty(story.date))
+                    story.date = dateStr;
+                viewHolder.dateText.setVisibility(View.VISIBLE);
+                viewHolder.dateText.setText(story.date);
+            } else
+                viewHolder.dateText.setVisibility(View.GONE);
+
             if (story.images != null && story.images.size() > 0)
                 Glide.with(mActivity).load(story.images.get(0)).into(viewHolder.storyImage);
             viewHolder.storyTitle.setText(story.title);
@@ -103,6 +126,9 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
 
         @Bind(R.id.story_title)
         TextView storyTitle;
+
+        @Bind(R.id.date_text)
+        TextView dateText;
 
         public ViewHolder(View itemView) {
             super(itemView);

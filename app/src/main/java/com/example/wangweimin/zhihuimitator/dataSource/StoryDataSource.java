@@ -1,8 +1,5 @@
 package com.example.wangweimin.zhihuimitator.dataSource;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-
 import com.example.wangweimin.zhihuimitator.model.Story;
 
 import java.util.List;

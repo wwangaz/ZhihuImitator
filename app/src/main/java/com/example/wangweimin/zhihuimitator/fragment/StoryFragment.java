@@ -93,6 +93,8 @@ public class StoryFragment extends BaseFragment {
         repository.getLatestStories(new StoryDataSource.LoadStoriesCallback() {
             @Override
             public void onStoriesLoaded(List<Story> stories) {
+                mAdapter.setDateStr("今日日报");
+                mAdapter.setFirstSize(stories.size());
                 mAdapter.refreshViewByReplaceData(stories);
                 mListView.renderViewByResult(false, stories.size(), stories.isEmpty());
                 dismissProgress();
@@ -125,6 +127,7 @@ public class StoryFragment extends BaseFragment {
         repository.getStoriesByDate(date, new StoryDataSource.LoadStoriesCallback() {
             @Override
             public void onStoriesLoaded(List<Story> stories) {
+                mAdapter.setDateStr(date);
                 mAdapter.refreshViewByAddData(stories);
                 mListView.renderViewByResult(false, stories.size(), stories.isEmpty());
             }
