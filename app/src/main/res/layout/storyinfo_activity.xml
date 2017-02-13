@@ -21,6 +21,7 @@
             app:layout_scrollFlags="scroll" />
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll"
@@ -52,7 +53,7 @@
             </LinearLayout>
 
             <include
-                android:id="@+id/head_layout"
+                android:id="@+id/banner_layout"
                 layout="@layout/banner_item"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"

@@ -3,6 +3,7 @@ package com.example.wangweimin.zhihuimitator.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBar;
@@ -58,16 +59,17 @@ public class StoryDetailActivity extends BaseActivity {
     @Bind(R.id.banner_text)
     TextView mTextView;
 
-    @Bind(R.id.head_layout)
-    RelativeLayout mHeadLayout;
-
     @Bind(R.id.adviser_layout)
     LinearLayout mAdvisorLayout;
+
+    @Bind(R.id.banner_layout)
+    RelativeLayout mBannerLayout;
 
     @Bind(R.id.img_layout)
     LinearLayout mImgLayout;
 
     private String storyId;
+    private boolean showHead;
 
     @Override
     protected int getLayoutId() {
@@ -77,7 +79,7 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     protected void afterViews(Bundle saveInstanceState) {
         storyId = getIntent().getStringExtra(Constants.STORY_ID);
-        boolean showHead = getIntent().getBooleanExtra(SHOW_HEAD, true);
+        showHead = getIntent().getBooleanExtra(SHOW_HEAD, true);
 
         setSupportActionBar(mToolbar);
 
@@ -88,7 +90,7 @@ public class StoryDetailActivity extends BaseActivity {
         }
 
         if(!showHead){
-            mHeadLayout.setVisibility(View.GONE);
+            mBannerLayout.setVisibility(View.GONE);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.topMargin = 0;
             mWebView.setLayoutParams(params);
@@ -129,7 +131,7 @@ public class StoryDetailActivity extends BaseActivity {
                     mWebView.loadData(htmlData, "text/html; charset=UTF-8", null);
                     Glide.with(thisActivity).load(story.image).into(mImageView);
                     mTextView.setText(story.title);
-                    if(story.recommenders != null && !story.recommenders.isEmpty()){
+                    if(story.recommenders != null && !story.recommenders.isEmpty() && !showHead){
                         renderRecommenderLayout(story.recommenders);
                     }
                 }
