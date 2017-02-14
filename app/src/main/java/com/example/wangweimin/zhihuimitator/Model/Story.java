@@ -22,6 +22,7 @@ public class Story extends BaseBean {
     public boolean favorite;
     public boolean top;
     public int type;
+    public boolean read;
 
     public class StoryResult {
         public String date;

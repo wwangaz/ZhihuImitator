@@ -68,6 +68,8 @@ public class StoryFragment extends BaseFragment {
             @Override
             public void onItemClickListener(View view, int position) {
                 Story story = mAdapter.getData().get(position);
+                story.read = true;
+                mAdapter.notifyDataSetChanged();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.STORY_ID, story.id);
                 mActivity.pushView(StoryDetailActivity.class, bundle);

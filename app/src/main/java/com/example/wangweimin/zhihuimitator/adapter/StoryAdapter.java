@@ -87,6 +87,7 @@ public class StoryAdapter extends BaseRecyclerListAdapter<Story, StoryAdapter.Vi
             if (story.images != null && story.images.size() > 0)
                 Glide.with(mActivity).load(story.images.get(0)).into(viewHolder.storyImage);
             viewHolder.storyTitle.setText(story.title);
+            if (story.read) viewHolder.storyTitle.setTextColor(mActivity.getResources().getColor(R.color.text_grey));
         }
 
     }
