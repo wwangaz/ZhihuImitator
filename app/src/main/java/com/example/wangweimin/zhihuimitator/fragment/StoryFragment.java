@@ -2,6 +2,10 @@ package com.example.wangweimin.zhihuimitator.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.example.wangweimin.zhihuimitator.Constants;
@@ -84,6 +88,24 @@ public class StoryFragment extends BaseFragment {
             }
         });
 
+        mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                if (firstVisiblePosition == 0)
+                    return;
+                else
+                    firstVisiblePosition--;
+                String dateStr = mAdapter.getData().get(firstVisiblePosition).date;
+                if (!TextUtils.isEmpty(dateStr)) {
+                    ActionBar actionBar = ((BaseActivity) getActivity()).getSupportActionBar();
+                    if (actionBar != null)
+                        actionBar.setTitle(dateStr);
+                }
+            }
+        });
+
         getData();
     }
 
@@ -137,7 +159,6 @@ public class StoryFragment extends BaseFragment {
                 AppUtil.showShortMessage(mActivity, "获取" + date + "日报失败");
             }
         });
-
     }
 
     private void dismissProgress() {
